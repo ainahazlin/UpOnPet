@@ -137,10 +137,14 @@ public class MainScreenStaff extends AppCompatActivity {
         String itembrought = itemcheckedin.getText().toString();
         String paymentStatus = paymentstatus.getSelectedItem().toString();
         String totalPetsToRegisterString = totalpet.getText().toString();
-        int totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
+        int totalPetsToRegister = 0; // Initialize to 0
 
+        // Check if the input for totalPetsToRegisterString is not empty
+        if (!TextUtils.isEmpty(totalPetsToRegisterString)) {
+            totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
+        }
 
-        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString())|| TextUtils.isEmpty(itemcheckedin.getText().toString())|| paymentStatus.equals("Payment Status")|| TextUtils.isEmpty(totalPetsToRegisterString) || totalPetsToRegister>0) {
+        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString()) || TextUtils.isEmpty(itemcheckedin.getText().toString()) || paymentStatus.equals("Payment Status") || totalPetsToRegister < 1) {
             Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
         } else if (isValidMalaysiaPhoneNumber(formatcnc)) {
             // Generate a random key for the client
@@ -148,9 +152,8 @@ public class MainScreenStaff extends AppCompatActivity {
 
             // Save the client information using the generated key
             DatabaseReference clientReference = reference.child("Client").child(clientKey);
-            HelperClassRegisterClient helperClassRegisterClient = new HelperClassRegisterClient(formatcnc, nameclient, addressclient, emailofph,itembrought, paymentStatus, totalPetsToRegister, clientKey, true);
+            HelperClassRegisterClient helperClassRegisterClient = new HelperClassRegisterClient(formatcnc, nameclient, addressclient, emailofph, itembrought, paymentStatus, totalPetsToRegister, clientKey, true);
             clientReference.setValue(helperClassRegisterClient);
-
 
             Toast.makeText(MainScreenStaff.this, "Client is successfully registered!", Toast.LENGTH_SHORT).show();
 
