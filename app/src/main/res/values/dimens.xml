@@ -1,0 +1,5 @@
+<!-- res/values/dimens.xml -->
+<resources>
+    <dimen name="marker_icon_size">48dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

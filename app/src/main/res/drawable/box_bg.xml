@@ -1,0 +1,8 @@
+<!-- box_bg.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- Background color of the box -->
+    <corners android:radius="8dp" /> <!-- Corner radius of the box -->
+    <stroke
+        android:width="3dp"
+        android:color="@color/nude" /> <!-- Border color and width of the box -->
+</shape>

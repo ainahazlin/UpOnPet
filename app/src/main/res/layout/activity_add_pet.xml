@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/graybeige"
+    android:orientation="vertical"
+    tools:context=".AddPet">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/rounded_box"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="10dp">
+
+                <ImageView
+                    android:id="@+id/imagepet"
+                    android:layout_width="185dp"
+                    android:layout_height="173dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_add_24" />
+
+            </androidx.cardview.widget.CardView>
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/progressstore"
+                android:visibility="gone"
+                />
+
+
+            <TextView
+                android:id="@+id/text_petdetails"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:gravity="center"
+                android:text="Pet"
+                android:textColor="@color/black"
+                android:textSize="16pt" />
+
+
+            <Spinner
+                android:id="@+id/spinnerpettype"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/box_bg"
+                android:gravity="center" />
+
+            <Spinner
+                android:id="@+id/spinnerpetbreed"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/box_bg"
+                android:gravity="center" />
+
+
+            <EditText
+                android:id="@+id/petnameclient"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/box_bg"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Pet Name"
+                android:inputType="text" />
+
+
+            <EditText
+                android:id="@+id/editTextCheckIn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/box_bg"
+                android:clickable="true"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
+                android:hint="Date" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/vaccineSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:gravity="center" />
+
+                <Button
+                    android:id="@+id/addVaccineButton"
+                    android:layout_width="60dp"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/graybeige"
+                    android:layout_height="wrap_content"
+                    android:text="+" />
+
+            </LinearLayout>
+
+            <TableLayout
+                android:id="@+id/vaccineTable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addVaccineButton"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/buttonregisterpet"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/greygreen"
+                android:text="Register Pet"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

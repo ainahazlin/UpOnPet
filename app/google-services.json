@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "642857735858",
+    "project_id": "uponpet-database",
+    "storage_bucket": "uponpet-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642857735858:android:270d81bd5a103401335bab",
+        "android_client_info": {
+          "package_name": "com.example.uponpet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642857735858-ptj32a6co0927jlbmdt1lhmapj58j7k4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKEKyPKQu-DR_feVO1It2Mv84kh-j9daQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642857735858-ptj32a6co0927jlbmdt1lhmapj58j7k4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

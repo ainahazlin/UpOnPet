@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="offwhite">#efefe5</color>
+    <color name="nude">#a9957c</color>
+    <color name="lightnude">#e5d7bc</color>
+    <color name="graybeige">#a48f7a</color>
+    <color name="greygreen">#dedbc1</color>
+    <color name="sagegreen">#b2ac88</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="teal_700">#00796B</color>
+    <color name="date_picker_dialog_header_background">@color/graybeige</color>
+    <color name="date_picker_dialog_background">#00FFFFFF</color>
+    <color name="date_picker_dialog_selected_day">@color/greygreen</color>
+    <color name="date_picker_dialog_selected_month">#B71C1C</color>
+    <color name="date_picker_dialog_day_of_week">#611B1B</color>
+
+</resources>

@@ -1,0 +1,10 @@
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ExtraText">
+    <solid android:color="@color/offwhite" /> <!-- Change the color to your desired background color -->
+    <corners android:radius="8dp" /> <!-- Change the radius to adjust the amount of rounding -->
+    <stroke
+        android:color="@color/lightnude"
+        android:width="2dp"> <!-- Change the color to your desired stroke color -->
+    </stroke><!-- Change the width to adjust the stroke thickness -->
+</shape>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <permission
+        android:name="com.example.uponpet.permission.RECEIVE_NOTIFICATIONS"
+        android:description="@string/notification_permission_description"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="com.example.myapp.permission.RECEIVE_NOTIFICATIONS" />
+
+    <permission
+        android:name="com.example.uponpet.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.uponpet.permission.C2D_MESSAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.UpOnPet"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".PaymentTransaction"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ImageDetailsActivity"
+            android:exported="true"
+            android:theme="@style/Base.Theme.UpOnPet">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddPetEdit"
+            android:exported="false" />
+        <activity
+            android:name=".EditPet"
+            android:exported="false" />
+        <activity
+            android:name=".EditClient"
+            android:exported="false" />
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PetList"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPasswordPage"
+            android:exported="false" />
+        <activity
+            android:name=".ListofClients"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.uponpet.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/iconnobg" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/greygreen" />
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".EditProfileStaff"
+            android:exported="false" />
+        <activity
+            android:name=".AddPet"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordPage"
+            android:exported="false" />
+        <activity
+            android:name=".DetailsPetHotelforClient"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileClient"
+            android:exported="false" />
+        <activity
+            android:name=".ProfilePetHotel"
+            android:exported="false" />
+        <activity
+            android:name=".AnalyticPetHotelStaff"
+            android:exported="false" />
+        <activity
+            android:name=".UpdatePetStaff"
+            android:exported="false" />
+        <activity
+            android:name=".LogInActivityClient"
+            android:exported="false" />
+        <activity
+            android:name=".LogInActivityStaff"
+            android:exported="false" />
+        <activity
+            android:name=".MainScreenClient"
+            android:exported="false"
+            android:theme="@style/Theme.UploadRetrieveImage" />
+        <activity
+            android:name=".MainScreenStaff"
+            android:exported="false" />
+        <activity
+            android:name=".MainScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/MyAPIkey" />
+
+        <receiver
+            android:name=".MyBootCompletedReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sagegreen"
+    tools:context=".MainScreenStaff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="100dp">
+
+
+            <LinearLayout
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="130dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_box"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textregistercl"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:fontFamily="@font/opensans_semibold"
+                    android:gravity="center"
+                    android:text="Client"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <EditText
+                    android:id="@+id/contactclient"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Client Contact Number"
+                    android:inputType="text" />
+
+
+                <EditText
+                    android:id="@+id/nameclient"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Client Name"
+                    android:inputType="text" />
+
+
+                <EditText
+                    android:id="@+id/adressclient"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Client Home Address"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxLines="5"
+                    android:minLines="2" />
+
+                <EditText
+                    android:id="@+id/itemcheckedin"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Item checked-in"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:maxLines="5"
+                    android:minLines="2" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:id="@+id/paymentstatus"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Total Pet to Register"
+                    />
+
+
+                <EditText
+                    android:id="@+id/howmanypet"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/box_bg"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Total Pet to Register"
+                    android:inputType="text" />
+
+
+            </LinearLayout>
+
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="350dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:layout_marginBottom="10dp"-->
+<!--                android:background="@drawable/rounded_box"-->
+<!--                android:orientation="vertical"-->
+<!--                android:padding="16dp">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/text_petdetails"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:fontFamily="@font/opensans_semibold"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Pet"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="30sp" />-->
+
+<!--                <Spinner-->
+<!--                    android:id="@+id/spinnerpettype"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:background="@drawable/box_bg"-->
+<!--                    android:gravity="center" />-->
+
+<!--                <EditText-->
+<!--                    android:id="@+id/petnameclient"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:background="@drawable/box_bg"-->
+<!--                    android:ems="10"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="Pet Name"-->
+<!--                    android:inputType="text" />-->
+
+
+<!--                <EditText-->
+<!--                    android:id="@+id/editTextCheckIn"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:background="@drawable/box_bg"-->
+<!--                    android:focusable="false"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="Check-in Date" />-->
+
+
+<!--                <EditText-->
+<!--                    android:id="@+id/editTextCheckOut"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:background="@drawable/box_bg"-->
+<!--                    android:focusable="false"-->
+<!--                    android:gravity="center"-->
+<!--                    android:hint="Check-out Date" />-->
+
+
+<!--            </LinearLayout>-->
+
+            <Button
+                android:id="@+id/buttonregisterclient"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/greygreen"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="Register Client" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomnavistaff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom_bg"
+        android:elevation="20dp"
+        app:itemIconSize="30dp"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+        app:itemIconTint="@drawable/item_selector"
+        app:itemRippleColor="@android:color/transparent"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottomnavi_staff" />
+
+</RelativeLayout>

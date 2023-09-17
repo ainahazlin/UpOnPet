@@ -1,0 +1,7 @@
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <stroke
+        android:width="5dp"
+        android:color="@color/greygreen" />
+    <corners android:radius="40dp" /> <!-- Adjust the corner radius as per your CardView's corner radius -->
+</shape>

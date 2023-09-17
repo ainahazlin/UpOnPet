@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/sagegreen"
+    tools:context=".ProfilePetHotel">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp"
+            android:paddingBottom="100dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                app:cardCornerRadius="10dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/iconnobg" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/infoButton"-->
+            <!--                    android:layout_width="40dp"-->
+            <!--                    android:layout_height="45dp"-->
+            <!--                    android:layout_gravity="start|center_vertical"-->
+            <!--                    android:layout_marginStart="10dp"-->
+            <!--                    android:layout_marginTop="5dp"-->
+            <!--                    android:backgroundTint="@color/greygreen"-->
+            <!--                    android:gravity="center"-->
+            <!--                    android:text="i"-->
+            <!--                    android:textColor="@color/white"-->
+            <!--                    android:textSize="50dp" />-->
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/opensans_semibold"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+
+            <ProgressBar
+                android:id="@+id/loadingProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_bg"
+                android:drawableLeft="@drawable/baseline_pets_24"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_bg"
+                android:drawableLeft="@drawable/email_icon"
+                android:drawableTint="@color/black"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_bg"
+                android:drawableLeft="@drawable/contact_icon"
+                android:drawableTint="@color/black"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/white_bg"
+                android:drawableLeft="@drawable/address_icon"
+                android:drawableTint="@color/black"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:maxLines="5"
+                android:minLines="2"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/listofclient"
+        android:layout_width="55dp"
+        android:layout_height="45dp"
+        android:layout_gravity="start|top"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/greygreen"
+        android:drawableLeft="@drawable/baseline_format_list_bulleted_24"
+        android:drawableTint="@color/white"
+        android:gravity="start" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomnavistaff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bottom_bg"
+        android:elevation="20dp"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@drawable/item_selector"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/bottomnavi_staff" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
