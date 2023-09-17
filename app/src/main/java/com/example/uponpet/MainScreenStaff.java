@@ -137,13 +137,13 @@ public class MainScreenStaff extends AppCompatActivity {
         String itembrought = itemcheckedin.getText().toString();
         String paymentStatus = paymentstatus.getSelectedItem().toString();
         String totalPetsToRegisterString = totalpet.getText().toString();
+        int totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
 
 
-        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString())|| TextUtils.isEmpty(itemcheckedin.getText().toString())|| paymentStatus.equals("Payment Status")|| TextUtils.isEmpty(totalPetsToRegisterString)) {
+        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString())|| TextUtils.isEmpty(itemcheckedin.getText().toString())|| paymentStatus.equals("Payment Status")|| TextUtils.isEmpty(totalPetsToRegisterString) || totalPetsToRegister>0) {
             Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
         } else if (isValidMalaysiaPhoneNumber(formatcnc)) {
             // Generate a random key for the client
-            int totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
             String clientKey = reference.child("Client").push().getKey();
 
             // Save the client information using the generated key
