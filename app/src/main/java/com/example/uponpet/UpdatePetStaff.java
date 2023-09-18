@@ -168,7 +168,7 @@ public class UpdatePetStaff extends AppCompatActivity {
                 if (latestMediaUri != null) {
                     updatepetToFirebase();
                 } else {
-                    Toast.makeText(UpdatePetStaff.this, "Please select or capture an image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdatePetStaff.this, "Please select an image or video", Toast.LENGTH_SHORT).show();
                     progresstoupdate.setVisibility(View.INVISIBLE);
                 }
             }
@@ -366,6 +366,9 @@ public class UpdatePetStaff extends AppCompatActivity {
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 // Media selection canceled
+                imagetoupdate.setVisibility(View.GONE);
+                videoView.setVisibility(View.GONE);
+                latestMediaUri=null;
                 Toast.makeText(this, "Media selection canceled! Please select another media", Toast.LENGTH_SHORT).show();
 
             }

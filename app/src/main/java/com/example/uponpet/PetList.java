@@ -49,9 +49,41 @@ public class PetList extends AppCompatActivity {
         databaseRef = FirebaseDatabase.getInstance().getReference();
 
         // Retrieve pet details based on client ID (assuming clientID is a string variable)
-        SharedPreferences sharedPreferences = getSharedPreferences("PetHotelClient",MODE_PRIVATE);
+//        SharedPreferences sharedPreferences = getSharedPreferences("PetHotelClient",MODE_PRIVATE);
+//        String clientID = sharedPreferences.getString("clientKey", "");
+//        Toast.makeText(this, "Please wait for the data to load", Toast.LENGTH_SHORT).show();
+//
+//        Query query = FirebaseDatabase.getInstance().getReference("Pet")
+//                .orderByChild("clientID")
+//                .equalTo(clientID);
+//        query.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                List<HelperClassPet> petList = new ArrayList<>();
+//
+//                // Iterate through the snapshot to retrieve pet details
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    HelperClassPet pet = dataSnapshot.getValue(HelperClassPet.class);
+//                    petList.add(pet);
+//                }
+//
+//                // Pass the pet details to the adapter and notify the changes
+//                adapter.setPetList(petList);
+//                adapter.notifyDataSetChanged();
+//                progressbar.setVisibility(View.GONE);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                // Handle any errors while retrieving data from the database
+//                Toast.makeText(PetList.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//                progressbar.setVisibility(View.GONE);
+//
+//            }
+//        });
+        SharedPreferences sharedPreferences = getSharedPreferences("PetHotelClient", MODE_PRIVATE);
         String clientID = sharedPreferences.getString("clientKey", "");
-        Toast.makeText(this, "Please wait for the data to load", Toast.LENGTH_SHORT).show();
 
         Query query = FirebaseDatabase.getInstance().getReference("Pet")
                 .orderByChild("clientID")
@@ -64,23 +96,24 @@ public class PetList extends AppCompatActivity {
                 // Iterate through the snapshot to retrieve pet details
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     HelperClassPet pet = dataSnapshot.getValue(HelperClassPet.class);
-                    petList.add(pet);
+
+                    // Check if the pet has activeFlag set to true
+                    if (pet != null && pet.isActiveFlag()) {
+                        petList.add(pet);
+                    }
                 }
 
-                // Pass the pet details to the adapter and notify the changes
+                // Pass the filtered pet details to the adapter and notify the changes
                 adapter.setPetList(petList);
                 adapter.notifyDataSetChanged();
                 progressbar.setVisibility(View.GONE);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Handle any errors while retrieving data from the database
-                Toast.makeText(PetList.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                progressbar.setVisibility(View.GONE);
-
+                // Handle onCancelled as needed
             }
         });
+
     }
 }

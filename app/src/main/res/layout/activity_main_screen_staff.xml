@@ -45,9 +45,9 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/box_bg"
                     android:ems="10"
+                    android:inputType="number"
                     android:gravity="center"
-                    android:hint="Client Contact Number"
-                    android:inputType="text" />
+                    android:hint="Client Contact Number" />
 
 
                 <EditText
@@ -97,6 +97,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/box_bg"
                     android:ems="10"
+                    android:inputType="number"
                     android:gravity="center"
                     android:hint="Total Pet to Register"
                     />
@@ -111,7 +112,7 @@
                     android:ems="10"
                     android:gravity="center"
                     android:hint="Total Pet to Register"
-                    android:inputType="text" />
+                    android:inputType="number" />
 
 
             </LinearLayout>

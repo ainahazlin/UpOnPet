@@ -13,6 +13,10 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -49,6 +53,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -485,7 +490,44 @@ public class EditPet extends AppCompatActivity {
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class); // Add this line
 
                             // Load the image into the imagepet ImageView using Picasso
-                            Picasso.get().load(imageUrl).fit().into(imagepet);
+                            //Picasso.get().load(imageUrl).fit().into(imagepet);
+                            // Load the image into an ImageView with correct orientation
+                            Picasso.get()
+                                    .load(imageUrl)
+                                    .into(imagepet, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            // The image has been successfully loaded
+                                        }
+
+                                        @Override
+                                        public void onError(Exception e) {
+                                            // Handle any errors here
+                                        }
+                                    });// Load the image into an ImageView
+                            Picasso.get().load(imageUrl).into(imagepet, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    // The image has been successfully loaded
+
+                                    // Check the image orientation and rotate it if necessary
+                                    Bitmap bitmap = ((BitmapDrawable) imagepet.getDrawable()).getBitmap();
+                                    int orientation = getOrientation(imageUrl); // Replace with your image URL
+                                    if (orientation != ExifInterface.ORIENTATION_NORMAL) {
+                                        Matrix matrix = new Matrix();
+                                        matrix.postRotate(orientation);
+                                        Bitmap rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                                        imagepet.setImageBitmap(rotatedBitmap);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    // Handle any errors here
+                                }
+                            });
+
+
                             // Set breed and dates EditTexts
                             updatebreed.setText(petbreed);
                             updatecheckin.setText(convertDateFormat(checkInDate) + " - " + convertDateFormat(checkOutDate));
@@ -515,6 +557,16 @@ public class EditPet extends AppCompatActivity {
             }
         });
     }
+    private int getOrientation(String imagePath) {
+        try {
+            ExifInterface exifInterface = new ExifInterface(imagePath);
+            return exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ExifInterface.ORIENTATION_NORMAL;
+        }
+    }
+
 
     private void deletePet(String petID, String clientID) {
         DatabaseReference deleteRef = FirebaseDatabase.getInstance().getReference("Pet").child(petID);
@@ -698,14 +750,23 @@ public class EditPet extends AppCompatActivity {
 
 
     private boolean areDatesChanged(DataSnapshot dataSnapshot) {
-        String currentDateIn = dataSnapshot.child("dateIn").getValue(String.class);
-        String currentDateOut = dataSnapshot.child("dateOut").getValue(String.class);
+        String currentCheckInDate = dataSnapshot.child("dateIn").getValue(String.class);
+        String currentCheckOutDate = dataSnapshot.child("dateOut").getValue(String.class);
 
-        return !storedCheckInDate.isEmpty() && !storedCheckOutDate.isEmpty() &&
-                (!Objects.equals(storedCheckInDate, currentDateIn) ||
-                        !Objects.equals(storedCheckOutDate, currentDateOut) ||
-                        days != dataSnapshot.child("duration").getValue(Integer.class));
+        // Check for null values
+        if (storedCheckInDate != null && storedCheckOutDate != null) {
+            boolean checkInDateChanged = !Objects.equals(storedCheckInDate, currentCheckInDate);
+            boolean checkOutDateChanged = !Objects.equals(storedCheckOutDate, currentCheckOutDate);
+            boolean durationChanged = days != dataSnapshot.child("duration").getValue(Integer.class);
+
+            return checkInDateChanged || checkOutDateChanged || durationChanged;
+        } else {
+            // Handle the case where storedCheckInDate or storedCheckOutDate is null or empty
+            return false; // Or handle it based on your logic
+        }
     }
+
+
 
 
 

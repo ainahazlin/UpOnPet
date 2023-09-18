@@ -58,6 +58,8 @@ public class AddPet extends AppCompatActivity {
 
     private EditText name, checkin;
     private ProgressBar progress;
+    private OnDeleteClientDataCallback onDeleteClientDataCallback; // Declare the callback variable at the class level
+
     private String selectedPetType;
     private ImageView imagepet;
     private List<String> selectedVaccines = new ArrayList<>();
@@ -371,7 +373,6 @@ public class AddPet extends AppCompatActivity {
                     displayAddPetActivity();
                     Toast.makeText(AddPet.this, "Register for the next pet", Toast.LENGTH_SHORT).show();
                 } else {
-                    countAndSetTotalPetsForClient();
                     progress.setVisibility(View.GONE);
                     // Show confirmation dialog to stop adding pets
                     Intent intent = new Intent(AddPet.this, MainScreenStaff.class);
@@ -380,7 +381,6 @@ public class AddPet extends AppCompatActivity {
             }
         });
     }
-
     private void countAndSetTotalPetsForClient() {
         DatabaseReference petsRef = FirebaseDatabase.getInstance().getReference("Pet");
 
@@ -392,14 +392,22 @@ public class AddPet extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 int petCount = (int) dataSnapshot.getChildrenCount();
 
-                if(petCount == 0){
-                    deleteClientData();
-                    Toast.makeText(AddPet.this, "There is problem during client and pet registration. Please try again", Toast.LENGTH_LONG).show();
-                }else {
+                if (petCount < 1) {
+                    deleteClientData(new OnDeleteClientDataCallback() {
+                        @Override
+                        public void onDeleteComplete() {
+                            Toast.makeText(AddPet.this, "There was a problem during client and pet registration. Please try again", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
                     // Update the totalPets field in the Client path
                     DatabaseReference clientRef = FirebaseDatabase.getInstance().getReference("Client").child(clientId);
-                    clientRef.child("totalpettoregister").setValue(petCount);
-                    Toast.makeText(AddPet.this, petCount + " pet(s) registered \n You may display/add/update/delete on Checked-In Clients Page", Toast.LENGTH_SHORT).show();
+                    clientRef.child("totalPets").setValue(petCount);
+
+                    // Notify the callback that the operation is complete
+                    if (onDeleteClientDataCallback != null) {
+                        onDeleteClientDataCallback.onDeleteComplete();
+                    }
                 }
             }
 
@@ -410,6 +418,12 @@ public class AddPet extends AppCompatActivity {
             }
         });
     }
+
+    // Define an interface for the callback
+    private interface OnDeleteClientDataCallback {
+        void onDeleteComplete();
+    }
+
 
 
     private interface PetCheckCallback {
@@ -440,7 +454,7 @@ public class AddPet extends AppCompatActivity {
     private void showConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddPet.this);
         builder.setTitle("Confirmation")
-                .setMessage("Are you sure you want to stop adding pets?\nYou can add pets later in the List of Clients")
+                .setMessage("Are you sure you want to stop adding pets?\nYou can add pets later in the Edit Pet in Checked-In Clients")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -485,10 +499,16 @@ public class AddPet extends AppCompatActivity {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteClientData();
-                        finish();
+                        deleteClientData(new OnDeleteClientDataCallback() {
+                            @Override
+                            public void onDeleteComplete() {
+                                finish(); // Optionally, you can finish the current activity
+                            }
+                        });
                     }
                 })
+
+
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -499,7 +519,7 @@ public class AddPet extends AppCompatActivity {
                 .show();
     }
 
-    private void deleteClientData() {
+    private void deleteClientData(final OnDeleteClientDataCallback callback) {
         DatabaseReference clientsRef = FirebaseDatabase.getInstance().getReference("Client");
 
         // Create a DatabaseReference to the specific client data using the clientId
@@ -513,6 +533,10 @@ public class AddPet extends AppCompatActivity {
                         // Data successfully deleted
                         // You can perform any additional actions or show a message here
                         Toast.makeText(AddPet.this, "Client Data Deleted", Toast.LENGTH_SHORT).show();
+                        // Notify the callback that the operation is complete
+                        if (callback != null) {
+                            callback.onDeleteComplete();
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -521,6 +545,10 @@ public class AddPet extends AppCompatActivity {
                         // Failed to delete data
                         // Handle the error or show an error message
                         Toast.makeText(AddPet.this, "Failed to delete client data", Toast.LENGTH_SHORT).show();
+                        // Notify the callback that the operation is complete
+                        if (callback != null) {
+                            callback.onDeleteComplete();
+                        }
                     }
                 });
     }
@@ -577,6 +605,7 @@ public class AddPet extends AppCompatActivity {
                                 // Pet data is successfully stored
                                 Toast.makeText(AddPet.this, "Pet data is successfully stored!", Toast.LENGTH_SHORT).show();
                                 resetForm(); // Reset the form for the next pet registration
+                                countAndSetTotalPetsForClient();
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {

@@ -24,8 +24,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,15 +129,62 @@ public class MainScreenStaff extends AppCompatActivity {
         return matcher.matches();
     }
 
+
+
+//    public void RegisterClient(View view) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+//
+//        // Get the client details
+//        String contactnumberclient = cphonenum.getText().toString();
+//        String formatcnc = formatPhoneNumber(contactnumberclient);
+//        String nameclient = cname.getText().toString();
+//        String addressclient = caddress.getText().toString();
+//        String itembrought = itemcheckedin.getText().toString();
+//        String paymentStatus = paymentstatus.getSelectedItem().toString();
+//        String totalPetsToRegisterString = totalpet.getText().toString();
+//        int totalPetsToRegister = 0; // Initialize to 0
+//
+//        // Check if the input for totalPetsToRegisterString is not empty
+//        if (!TextUtils.isEmpty(totalPetsToRegisterString)) {
+//            totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
+//        }
+//
+//        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString()) || TextUtils.isEmpty(itemcheckedin.getText().toString()) || paymentStatus.equals("Payment Status") || totalPetsToRegister < 1) {
+//            Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
+//        } else if (isValidMalaysiaPhoneNumber(formatcnc)) {
+//            // Generate a random key for the client
+//            String clientKey = reference.child("Client").push().getKey();
+//
+//            // Save the client information using the generated key
+//            DatabaseReference clientReference = reference.child("Client").child(clientKey);
+//            HelperClassRegisterClient helperClassRegisterClient = new HelperClassRegisterClient(formatcnc, nameclient, addressclient, emailofph, itembrought, paymentStatus, totalPetsToRegister, clientKey, true);
+//            clientReference.setValue(helperClassRegisterClient);
+//
+//            Toast.makeText(MainScreenStaff.this, "Client is successfully registered!", Toast.LENGTH_SHORT).show();
+//
+//            repeattoaddpet(totalPetsToRegister, clientKey);
+//
+//            // Clear the input fields
+//            cphonenum.getText().clear();
+//            cname.getText().clear();
+//            caddress.getText().clear();
+//            totalpet.getText().clear();
+//            paymentstatus.setSelection(0);
+//            itemcheckedin.getText().clear();
+//        } else {
+//            Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     public void RegisterClient(View view) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         // Get the client details
-        String contactnumberclient = cphonenum.getText().toString();
-        String formatcnc = formatPhoneNumber(contactnumberclient);
-        String nameclient = cname.getText().toString();
-        String addressclient = caddress.getText().toString();
-        String itembrought = itemcheckedin.getText().toString();
+        String contactNumberClient = cphonenum.getText().toString();
+        String formattedContactNumber = formatPhoneNumber(contactNumberClient);
+        String nameClient = cname.getText().toString();
+        String addressClient = caddress.getText().toString();
+        String itemBrought = itemcheckedin.getText().toString();
         String paymentStatus = paymentstatus.getSelectedItem().toString();
         String totalPetsToRegisterString = totalpet.getText().toString();
         int totalPetsToRegister = 0; // Initialize to 0
@@ -144,31 +194,155 @@ public class MainScreenStaff extends AppCompatActivity {
             totalPetsToRegister = Integer.parseInt(totalPetsToRegisterString);
         }
 
-        if (TextUtils.isEmpty(cphonenum.getText().toString()) || TextUtils.isEmpty(cname.getText().toString()) || TextUtils.isEmpty(caddress.getText().toString()) || TextUtils.isEmpty(itemcheckedin.getText().toString()) || paymentStatus.equals("Payment Status") || totalPetsToRegister < 1) {
+        if (TextUtils.isEmpty(contactNumberClient) || TextUtils.isEmpty(nameClient) || TextUtils.isEmpty(addressClient) || TextUtils.isEmpty(itemBrought) || paymentStatus.equals("Payment Status") || totalPetsToRegister < 1) {
             Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
-        } else if (isValidMalaysiaPhoneNumber(formatcnc)) {
-            // Generate a random key for the client
-            String clientKey = reference.child("Client").push().getKey();
-
-            // Save the client information using the generated key
-            DatabaseReference clientReference = reference.child("Client").child(clientKey);
-            HelperClassRegisterClient helperClassRegisterClient = new HelperClassRegisterClient(formatcnc, nameclient, addressclient, emailofph, itembrought, paymentStatus, totalPetsToRegister, clientKey, true);
-            clientReference.setValue(helperClassRegisterClient);
-
-            Toast.makeText(MainScreenStaff.this, "Client is successfully registered!", Toast.LENGTH_SHORT).show();
-
-            repeattoaddpet(totalPetsToRegister, clientKey);
-
-            // Clear the input fields
-            cphonenum.getText().clear();
-            cname.getText().clear();
-            caddress.getText().clear();
-            totalpet.getText().clear();
-            paymentstatus.setSelection(0);
-            itemcheckedin.getText().clear();
+        } else if (isValidMalaysiaPhoneNumber(formattedContactNumber)) {
+            // Check if a client with the same contact number and activeFlag true exists
+            checkClientExistenceAndRegistration(formattedContactNumber, nameClient, addressClient, itemBrought, paymentStatus, totalPetsToRegister);
         } else {
             Toast.makeText(MainScreenStaff.this, "Please fill in all the fields correctly", Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+//    private void checkClientExistenceAndRegistration(final String formattedContactNumber, final String nameClient, final String addressClient, final String itemBrought, final String paymentStatus, final int totalPetsToRegister) {
+//        DatabaseReference clientsRef = FirebaseDatabase.getInstance().getReference("Client");
+//
+//        // Query to check if a client with the same contact number and activeFlag true exists
+//        clientsRef.orderByChild("clientcontactNumber")
+//                .equalTo(formattedContactNumber)
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                        boolean clientExists = false;
+//
+//                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                            HelperClassRegisterClient client = snapshot.getValue(HelperClassRegisterClient.class);
+//                            if (client != null && client.isActiveFlag()) {
+//                                clientExists = true;
+//                                break;
+//                            }
+//                        }
+//
+//                        if (clientExists) {
+//                            // A client with the same contact number and activeFlag true already exists
+//                            Toast.makeText(MainScreenStaff.this, "A client with this contact number already exists and has an active stay in pet hotel.", Toast.LENGTH_LONG).show();
+//                            cphonenum.getText().clear();
+//                            cname.getText().clear();
+//                            caddress.getText().clear();
+//                            totalpet.getText().clear();
+//                            paymentstatus.setSelection(0);
+//                            itemcheckedin.getText().clear();
+//                        } else {
+//                            // No existing client with the same contact number and activeFlag true, proceed with registration
+//                            registerNewClient(formattedContactNumber, nameClient, addressClient, itemBrought, paymentStatus, totalPetsToRegister);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        Toast.makeText(MainScreenStaff.this, "No internet connection", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
+
+    private void checkClientExistenceAndRegistration(final String formattedContactNumber, final String nameClient, final String addressClient, final String itemBrought, final String paymentStatus, final int totalPetsToRegister) {
+        DatabaseReference clientsRef = FirebaseDatabase.getInstance().getReference("Client");
+
+        // Query to check if a client with the same contact number and activeFlag true exists
+        clientsRef.orderByChild("clientcontactNumber")
+                .equalTo(formattedContactNumber)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        boolean clientExists = false;
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            HelperClassRegisterClient client = snapshot.getValue(HelperClassRegisterClient.class);
+                            if (client != null && client.isActiveFlag()) {
+                                clientExists = true;
+                                break;
+                            }
+                        }
+
+                        if (clientExists) {
+                            // A client with the same contact number and activeFlag true already exists
+                            Toast.makeText(MainScreenStaff.this, "A client with this contact number already exists and has an active stay in a pet hotel.", Toast.LENGTH_LONG).show();
+                            cphonenum.getText().clear();
+                            cname.getText().clear();
+                            caddress.getText().clear();
+                            totalpet.getText().clear();
+                            paymentstatus.setSelection(0);
+                            itemcheckedin.getText().clear();
+                        } else {
+                            // Check if the same contact number exists with activeFlag false under any pet hotel's email
+                            clientsRef.orderByChild("clientcontactNumber")
+                                    .equalTo(formattedContactNumber)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot clientDataSnapshot) {
+                                            boolean clientExistsInCheckedOutClients = false;
+
+                                            for (DataSnapshot clientSnapshot : clientDataSnapshot.getChildren()) {
+                                                HelperClassRegisterClient client = clientSnapshot.getValue(HelperClassRegisterClient.class);
+                                                if (client != null && !client.isActiveFlag() && client.getPetHotelEmail().equals(emailofph)) {
+                                                    clientExistsInCheckedOutClients = true;
+                                                    break;
+                                                }
+                                            }
+
+                                            if (clientExistsInCheckedOutClients) {
+                                                // A client with the same contact number and activeFlag false already exists under this pet hotel's email
+                                                Toast.makeText(MainScreenStaff.this, "A client with this contact number already exists in Checked-Out Clients.", Toast.LENGTH_LONG).show();
+                                                cphonenum.getText().clear();
+                                                cname.getText().clear();
+                                                caddress.getText().clear();
+                                                totalpet.getText().clear();
+                                                paymentstatus.setSelection(0);
+                                                itemcheckedin.getText().clear();
+                                            } else {
+                                                // No existing client with the same contact number and activeFlag false under this pet hotel's email, proceed with registration
+                                                registerNewClient(formattedContactNumber, nameClient, addressClient, itemBrought, paymentStatus, totalPetsToRegister);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError clientDatabaseError) {
+                                            Toast.makeText(MainScreenStaff.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainScreenStaff.this, "No internet connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    private void registerNewClient(String formattedContactNumber, String nameClient, String addressClient, String itemBrought, String paymentStatus, int totalPetsToRegister) {
+        // Generate a random key for the client
+        String clientKey = reference.child("Client").push().getKey();
+
+        // Save the client information using the generated key
+        DatabaseReference clientReference = reference.child("Client").child(clientKey);
+        HelperClassRegisterClient helperClassRegisterClient = new HelperClassRegisterClient(formattedContactNumber, nameClient, addressClient, emailofph, itemBrought, paymentStatus, totalPetsToRegister, clientKey, true);
+        clientReference.setValue(helperClassRegisterClient);
+
+        Toast.makeText(MainScreenStaff.this, "Client is successfully registered!", Toast.LENGTH_SHORT).show();
+
+        // Continue with other actions (e.g., adding pets)
+        repeattoaddpet(totalPetsToRegister, clientKey);
+
+        // Clear the input fields
+        cphonenum.getText().clear();
+        cname.getText().clear();
+        caddress.getText().clear();
+        totalpet.getText().clear();
+        paymentstatus.setSelection(0);
+        itemcheckedin.getText().clear();
     }
 
 

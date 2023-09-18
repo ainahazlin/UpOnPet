@@ -132,6 +132,54 @@ public class LogInActivityClient extends AppCompatActivity {
         return matcher.matches();
     }
 
+//    public void makeClientLogin(View view) {
+//        phoneNumber = clientlogin.getText().toString().trim();
+//        String formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+//        if (phoneNumber.isEmpty()) {
+//            Toast.makeText(LogInActivityClient.this, "Please enter your phone number", Toast.LENGTH_SHORT).show();
+//        } else if (isValidMalaysiaPhoneNumber(formattedPhoneNumber)) {
+//            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Client");
+//            Query checkUserDatabase = databaseRef.orderByChild("clientcontactNumber").equalTo(formattedPhoneNumber);
+//            checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//                    if (dataSnapshot.exists()) {
+//                        for (DataSnapshot clientSnapshot : dataSnapshot.getChildren()) {
+//                            boolean activeFlag = clientSnapshot.child("activeFlag").getValue(Boolean.class);
+//                            if (activeFlag) {
+//                                String clientKey = clientSnapshot.getKey(); // Get the key of the dataSnapshot
+//                                SharedPreferences.Editor editor = sharedPreferences.edit();
+//                                editor.putString("clientKey", clientKey);
+//                                editor.apply();
+//                                Toast.makeText(LogInActivityClient.this, "Please wait for the verification code", Toast.LENGTH_SHORT).show();
+//                                bar.setVisibility(View.VISIBLE);
+//                                Toast.makeText(LogInActivityClient.this, "Please choose any browser to allow authentication", Toast.LENGTH_SHORT).show();
+//                                sendverificationcode(formattedPhoneNumber);
+//                            } else {
+//                                // The account is not active
+//                                Toast.makeText(LogInActivityClient.this, "Account is not active\nDo ask the Pet Hotel for further action", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    } else {
+//                        // The phone number does not exist in the "Client" child of the database
+//                        // Display an error message or handle the login failure
+//                        clientlogin.setText("");
+//                        Toast.makeText(LogInActivityClient.this, "Phone number is not registered or inactive", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    // Handle any errors that occur during the database operation
+//                    Toast.makeText(LogInActivityClient.this, "Please try again, the operation is cancelled", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        } else {
+//            clientlogin.setText("");
+//            Toast.makeText(LogInActivityClient.this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+
     public void makeClientLogin(View view) {
         phoneNumber = clientlogin.getText().toString().trim();
         String formattedPhoneNumber = formatPhoneNumber(phoneNumber);
@@ -145,26 +193,20 @@ public class LogInActivityClient extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
                         for (DataSnapshot clientSnapshot : dataSnapshot.getChildren()) {
-                            boolean activeFlag = clientSnapshot.child("activeFlag").getValue(Boolean.class);
-                            if (activeFlag) {
-                                String clientKey = clientSnapshot.getKey(); // Get the key of the dataSnapshot
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString("clientKey", clientKey);
-                                editor.apply();
-                                Toast.makeText(LogInActivityClient.this, "Please wait for the verification code", Toast.LENGTH_SHORT).show();
-                                bar.setVisibility(View.VISIBLE);
-                                Toast.makeText(LogInActivityClient.this, "Please choose any browser to allow authentication", Toast.LENGTH_SHORT).show();
-                                sendverificationcode(formattedPhoneNumber);
-                            } else {
-                                // The account is not active
-                                Toast.makeText(LogInActivityClient.this, "Account is not active\nDo ask the Pet Hotel for further action", Toast.LENGTH_SHORT).show();
-                            }
+                            String clientKey = clientSnapshot.getKey(); // Get the key of the dataSnapshot
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("clientKey", clientKey);
+                            editor.apply();
+                            Toast.makeText(LogInActivityClient.this, "Please wait for the verification code", Toast.LENGTH_SHORT).show();
+                            bar.setVisibility(View.VISIBLE);
+                            Toast.makeText(LogInActivityClient.this, "Please choose any browser to allow authentication", Toast.LENGTH_SHORT).show();
+                            sendverificationcode(formattedPhoneNumber);
                         }
                     } else {
                         // The phone number does not exist in the "Client" child of the database
                         // Display an error message or handle the login failure
                         clientlogin.setText("");
-                        Toast.makeText(LogInActivityClient.this, "Phone number is not registered or inactive", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivityClient.this, "Phone number is not registered", Toast.LENGTH_SHORT).show();
                     }
                 }
 

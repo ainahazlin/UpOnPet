@@ -94,51 +94,83 @@ public class DetailsPetHotelforClient extends AppCompatActivity implements OnMap
 
         retrievepethoteldata();
     }
+//
+//    public void retrievepethoteldata() {
+//        SharedPreferences sharedPreferences = getSharedPreferences("PetHotelClient", Context.MODE_PRIVATE);
+//        String cphonenum = sharedPreferences.getString("clientcontactNumber", "");
+//
+//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Client");
+//        Query checkUserDatabase = databaseRef.orderByChild("clientcontactNumber").equalTo(cphonenum);
+//        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot clientSnapshot : dataSnapshot.getChildren()) {
+//                        String pethotelmail = clientSnapshot.child("petHotelEmail").getValue(String.class);
+//
+//                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Admin");
+//                        Query checkpethotel = dbref.orderByChild("pethotelemail").equalTo(pethotelmail);
+//                        checkpethotel.addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                if (snapshot.exists()) {
+//                                    for (DataSnapshot pethotelSnapshot : snapshot.getChildren()) {
+//                                        pethotelname = pethotelSnapshot.child("pethotelname").getValue(String.class);
+//                                        String pethotelcn = pethotelSnapshot.child("pethotelcontact").getValue(String.class);
+//                                        pethoteladd = pethotelSnapshot.child("pethoteladdress").getValue(String.class);
+//
+//                                        nmpethotel.setText(pethotelname);
+//                                        empethotel.setText(pethotelmail);
+//                                        cnpethotel.setText(pethotelcn);
+//                                        addpethotel.setText(pethoteladd);
+//                                        // Call onMapReady after retrieving the address
+//                                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//                                        if (pethoteladd != null && !pethoteladd.isEmpty()) {
+//                                            mapFragment.getMapAsync(DetailsPetHotelforClient.this);
+//                                        }
+//                                    }
+//                                } else {
+//                                    Toast.makeText(DetailsPetHotelforClient.this, "Pet hotel not found", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//                                Toast.makeText(DetailsPetHotelforClient.this, "Failed to retrieve pet hotel data. Please make sure you have internet connection", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                } else {
+//                    Toast.makeText(DetailsPetHotelforClient.this, "Client contact number not found", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Toast.makeText(DetailsPetHotelforClient.this, "Error accessing database.Please try again later", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
 
     public void retrievepethoteldata() {
         SharedPreferences sharedPreferences = getSharedPreferences("PetHotelClient", Context.MODE_PRIVATE);
-        String cphonenum = sharedPreferences.getString("clientcontactNumber", "");
+        String clientPhoneNumber = sharedPreferences.getString("clientcontactNumber", "");
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("Client");
-        Query checkUserDatabase = databaseRef.orderByChild("clientcontactNumber").equalTo(cphonenum);
-        checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference clientDatabaseRef = FirebaseDatabase.getInstance().getReference("Client");
+        Query queryClient = clientDatabaseRef.orderByChild("clientcontactNumber").equalTo(clientPhoneNumber);
+        queryClient.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot clientSnapshot : dataSnapshot.getChildren()) {
-                        String pethotelmail = clientSnapshot.child("petHotelEmail").getValue(String.class);
+                        String petHotelEmail = clientSnapshot.child("petHotelEmail").getValue(String.class);
+                        boolean activeFlag = clientSnapshot.child("activeFlag").getValue(Boolean.class);
 
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Admin");
-                        Query checkpethotel = dbref.orderByChild("pethotelemail").equalTo(pethotelmail);
-                        checkpethotel.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.exists()) {
-                                    for (DataSnapshot pethotelSnapshot : snapshot.getChildren()) {
-                                        pethotelname = pethotelSnapshot.child("pethotelname").getValue(String.class);
-                                        String pethotelcn = pethotelSnapshot.child("pethotelcontact").getValue(String.class);
-                                        pethoteladd = pethotelSnapshot.child("pethoteladdress").getValue(String.class);
-
-                                        nmpethotel.setText(pethotelname);
-                                        empethotel.setText(pethotelmail);
-                                        cnpethotel.setText(pethotelcn);
-                                        addpethotel.setText(pethoteladd);
-                                        // Call onMapReady after retrieving the address
-                                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                                        if (pethoteladd != null && !pethoteladd.isEmpty()) {
-                                            mapFragment.getMapAsync(DetailsPetHotelforClient.this);
-                                        }
-                                    }
-                                } else {
-                                    Toast.makeText(DetailsPetHotelforClient.this, "Pet hotel not found", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Toast.makeText(DetailsPetHotelforClient.this, "Failed to retrieve pet hotel data. Please make sure you have internet connection", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        if (activeFlag) {
+                            // Only proceed if the client has an active booking
+                            retrievePetHotelDetails(petHotelEmail);
+                        } else {
+                        }
                     }
                 } else {
                     Toast.makeText(DetailsPetHotelforClient.this, "Client contact number not found", Toast.LENGTH_SHORT).show();
@@ -147,10 +179,46 @@ public class DetailsPetHotelforClient extends AppCompatActivity implements OnMap
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(DetailsPetHotelforClient.this, "Error accessing database.Please try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailsPetHotelforClient.this, "Error accessing database. Please try again later", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    private void retrievePetHotelDetails(String petHotelEmail) {
+        DatabaseReference petHotelDatabaseRef = FirebaseDatabase.getInstance().getReference("Admin");
+        Query queryPetHotel = petHotelDatabaseRef.orderByChild("pethotelemail").equalTo(petHotelEmail);
+        queryPetHotel.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot petHotelSnapshot : snapshot.getChildren()) {
+                        pethotelname = petHotelSnapshot.child("pethotelname").getValue(String.class);
+                        String pethotelcn = petHotelSnapshot.child("pethotelcontact").getValue(String.class);
+                        pethoteladd = petHotelSnapshot.child("pethoteladdress").getValue(String.class);
+
+                        nmpethotel.setText(pethotelname);
+                        empethotel.setText(petHotelEmail);
+                        cnpethotel.setText(pethotelcn);
+                        addpethotel.setText(pethoteladd);
+
+                        // Call onMapReady after retrieving the address
+                        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                        if (pethoteladd != null && !pethoteladd.isEmpty()) {
+                            mapFragment.getMapAsync(DetailsPetHotelforClient.this);
+                        }
+                    }
+                } else {
+                    Toast.makeText(DetailsPetHotelforClient.this, "Pet hotel not found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(DetailsPetHotelforClient.this, "Failed to retrieve pet hotel data. Please make sure you have an internet connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     @Override
     public void onBackPressed() {
