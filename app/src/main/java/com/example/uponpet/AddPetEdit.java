@@ -70,7 +70,7 @@ public class AddPetEdit extends AppCompatActivity {
     long durationInDays;
 
     private Spinner spinnerpettype;
-    String selectedItem;
+    private String selectedPetType;
     private List<String> selectedVaccines = new ArrayList<>();
 
 
@@ -118,17 +118,7 @@ public class AddPetEdit extends AppCompatActivity {
         spinnerAdapter.add("Dog");
         spinnerAdapter.add("Cat");
 
-        spinnerpettype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectedItem = spinnerAdapter.getItem(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle the case when nothing is selected
-            }
-        });
         ArrayAdapter<String> spinnerBreedAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
         spinnerBreedAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerpetbreed.setAdapter(spinnerBreedAdapter);
@@ -145,7 +135,7 @@ public class AddPetEdit extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 // Get the selected pet type
-                String selectedPetType = spinnerpettype.getSelectedItem().toString();
+                selectedPetType = spinnerpettype.getSelectedItem().toString();
 
                 // Clear the current breed options
                 spinnerBreedAdapter.clear();
@@ -342,7 +332,6 @@ public class AddPetEdit extends AppCompatActivity {
         String petID = reference.child("Pet").push().getKey();
         String petName = name.getText().toString().trim();
         String petBreed = selectedBreed;
-        String petType = selectedItem;
 
 
         if (petName.isEmpty() || petBreed.isEmpty() || checkInDate == null || checkInDate.isEmpty() || checkOutDate == null || checkOutDate.isEmpty() || capturedImageUri == null || selectedVaccines.isEmpty() || selectedVaccines.contains("Select Vaccine")) {
@@ -360,7 +349,7 @@ public class AddPetEdit extends AppCompatActivity {
 
                 // Save the pet under the client's child node
                 DatabaseReference petReference = reference.child("Pet").child(petID);
-                HelperClassPet pet = new HelperClassPet(petID, clientId, petName, petType, petBreed, checkInDate, checkOutDate, days, imageUrl, true);
+                HelperClassPet pet = new HelperClassPet(petID, clientId, petName, selectedPetType, petBreed, checkInDate, checkOutDate, days, imageUrl, true);
                 petReference.setValue(pet);
 
                 DatabaseReference vaccinesReference = petReference.child("Vaccines");
