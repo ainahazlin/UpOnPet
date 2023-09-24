@@ -7,7 +7,3 @@ This is an android mobile application specifically for the current Pet Hotel cli
 4. Track/Update/Delete every detail keyed in
 5. Pie chart of the number of pet stay based on the type of pet
 6. Notification for the client every time there is a new update on the pet's condition
-
-You can download it by accessing the APK file below and installing it:
-
-https://drive.google.com/drive/folders/1wRwI5EzqsfowONqcvIMLndYOfRi2-hli?usp=sharing
